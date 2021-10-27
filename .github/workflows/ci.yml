@@ -1,0 +1,85 @@
+name: Continuous Integration
+on: push
+env:
+  RAILS_ENV: test
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby:
+          - "3.0"
+        db:
+          - sqlite3
+    env:
+      DB: ${{ matrix.db }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install package dependencies
+        run: "[ -e $APT_DEPS ] || sudo apt-get install -y --no-install-recommends $APT_DEPS"
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Retrieve Dependencies Cache
+        uses: actions/cache@v1
+        id: ruby-cache
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-${{ matrix.ruby }}-gems-${{ hashFiles(format('{0}{1}', github.workspace, '/Gemfile.lock')) }}
+
+      - name: Install Gems
+        run: |
+          bundle config path vendor/bundle
+          bundle install
+
+      - name: Run Tests
+        run: bin/rspec
+
+      - name: Upload Test Coverage to Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  rubocop:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby:
+          - "3.0"
+        db:
+          - sqlite3
+    env:
+      DB: ${{ matrix.db }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install package dependencies
+        run: "[ -e $APT_DEPS ] || sudo apt-get install -y --no-install-recommends $APT_DEPS"
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Retrieve Dependencies Cache
+        uses: actions/cache@v1
+        id: ruby-cache
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-${{ matrix.ruby }}-gems-${{ hashFiles(format('{0}{1}', github.workspace, '/Gemfile.lock')) }}
+
+      - name: Install Gems
+        run: |
+          bundle config path vendor/bundle
+          bundle install
+
+      - name: Run Code Quality Check
+        run: bin/rubocop
