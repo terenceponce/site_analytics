@@ -6,3 +6,5 @@ gem 'rubocop-rspec', require: false
 gem 'simplecov', require: false, group: :test
 gem 'simplecov-lcov', '~> 0.8.0'
 gem 'byebug'
+gem 'sqlite3'
+gem 'sequel'

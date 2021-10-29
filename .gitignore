@@ -1,3 +1,5 @@
 /.bundle
 /coverage
 /.byebug_history
+/database.db
+/test-database.db

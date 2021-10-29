@@ -1,12 +1,15 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
 
 require 'site_analytics'
+require 'sequel'
+DB = Sequel.connect('sqlite://database.db')
 
 puts 'Analyzing log file...'
 results = SiteAnalytics.execute(ARGV[0])
+puts DB.table_exists?(:pages)
 
 puts 'Results are in!'
 puts ''
