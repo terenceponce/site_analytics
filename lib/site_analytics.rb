@@ -7,8 +7,7 @@ require 'site_analytics/parser'
 # the different operations needed to analyze the data
 module SiteAnalytics
   def self.execute(file)
-    migrator = SiteAnalytics::Migrator.new
-    migrator.create
+    SiteAnalytics::Migrator.create
     SiteAnalytics::Parser.new(file).execute
   end
 end

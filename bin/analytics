@@ -9,7 +9,6 @@ DB = Sequel.connect('sqlite://database.db')
 
 puts 'Analyzing log file...'
 results = SiteAnalytics.execute(ARGV[0])
-puts DB.table_exists?(:pages)
 
 puts 'Results are in!'
 puts ''
