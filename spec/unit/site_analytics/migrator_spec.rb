@@ -4,6 +4,10 @@ require 'site_analytics/migrator'
 
 RSpec.describe SiteAnalytics::Migrator do
   describe '#create' do
+    before do
+      described_class.destroy
+    end
+
     after do
       described_class.destroy
     end
