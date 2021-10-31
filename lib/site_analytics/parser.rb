@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'site_analytics/service/page'
+require 'site_analytics/service/view'
+
 module SiteAnalytics
   # Parses each line from the given file and converts it into
   # a more readable format for our other classes to use.
@@ -9,19 +12,14 @@ module SiteAnalytics
     end
 
     def execute
-      page_views = {}
-
       File.foreach(@file_path) do |line|
         entry = line.split
 
-        page_views[entry[0]] = if page_views.key?(entry[0])
-                                 page_views[entry[0]] + 1
-                               else
-                                 1
-                               end
+        page = SiteAnalytics::Service::Page.create_page(entry[0])
+        SiteAnalytics::Service::View.create_view(page, entry[1])
       end
 
-      page_views
+      true
     end
   end
 end

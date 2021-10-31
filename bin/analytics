@@ -3,17 +3,17 @@
 
 $LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
 
-require 'site_analytics'
 require 'sequel'
 DB = Sequel.connect('sqlite://database.db')
 
+require 'site_analytics'
 puts 'Analyzing log file...'
 results = SiteAnalytics.execute(ARGV[0])
 
 puts 'Results are in!'
 puts ''
-results.each do |key, value|
-  puts "#{key} had #{value} visits"
+results.each do |result|
+  puts "#{result[:url]} had #{result[:unique_views]} unique visits and #{result[:page_views]} total visits"
 end
 
 puts ''

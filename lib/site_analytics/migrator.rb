@@ -19,6 +19,8 @@ module SiteAnalytics
       DB.create_table :pages do
         primary_key :id
         String :url
+
+        index :url, unique: true
       end
     end
 
@@ -29,6 +31,9 @@ module SiteAnalytics
         primary_key :id
         String :ip_address
         foreign_key :page_id, :pages
+
+        index :ip_address
+        index :page_id
       end
     end
   end

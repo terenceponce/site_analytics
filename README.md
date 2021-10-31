@@ -16,6 +16,6 @@ bin/analytics webserver.log
 ## Features/Things To Do
 
 - [x] Basic Parsing and Presentation
-- [ ] Using a database to collect the parsed data
-- [ ] Sort pages according to number of views
-- [ ] Show number of unique visits
+- [x] Using a database to collect the parsed data
+- [x] Sort pages according to number of views
+- [x] Show number of unique visits
